@@ -19,6 +19,17 @@ func deg2rad(degrees float64) float64 {
 	return degrees * (math.Pi / 180.0)
 }
 
+// Calculate the Geom Mean Anom Sun in degrees based on the formula: 357.52911 + julianCentury * (35999.05029 - 0.0001537 * julianCentury)
+// julianCentury - Julian century calculated by the calcJulianCentury function
+// Return The Geom Mean Anom Sun slice
+func calcGeomMeanAnomSun(julianCentury []float64) (geomMeanAnomSun []float64) {
+	for index := 0; index < len(julianCentury); index++ {
+		temp := 357.52911 + julianCentury[index]*(35999.05029-0.0001537*julianCentury[index])
+		geomMeanAnomSun = append(geomMeanAnomSun, temp)
+	}
+	return
+}
+
 // Calculate the Eccent Earth Orbit based on the formula: 0.016708634 - julianCentury * (0.000042037 + 0.0000001267 * julianCentury)
 // julianCentury - Julian century calculated by the calcJulianCentury function
 // Return The Eccent Earth Orbit slice
