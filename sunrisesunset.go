@@ -240,3 +240,11 @@ func checkLatitude(latitude float64) bool {
 	}
 	return true
 }
+
+// Check if the longitude is valid. Range: -180 - 180
+func checkLongitude(longitude float64) bool {
+	if longitude < -180 || longitude > 180 {
+		return false
+	}
+	return true
+}
