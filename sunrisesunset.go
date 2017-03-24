@@ -248,3 +248,11 @@ func checkLongitude(longitude float64) bool {
 	}
 	return true
 }
+
+// Check if the UTC offset is valid. Range: -12 - 14
+func checkUtcOffset(utcOffset float64) bool {
+	if utcOffset < -12 || utcOffset > 14 {
+		return false
+	}
+	return true
+}
