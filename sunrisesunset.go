@@ -19,6 +19,17 @@ func deg2rad(degrees float64) float64 {
 	return degrees * (math.Pi / 180.0)
 }
 
+// Calculate the Eccent Earth Orbit based on the formula: 0.016708634 - julianCentury * (0.000042037 + 0.0000001267 * julianCentury)
+// julianCentury - Julian century calculated by the calcJulianCentury function
+// Return The Eccent Earth Orbit slice
+func calcEccentEarthOrbit(julianCentury []float64) (eccentEarthOrbit []float64) {
+	for index := 0; index < len(julianCentury); index++ {
+		temp := 0.016708634 - julianCentury[index]*(0.000042037+0.0000001267*julianCentury[index])
+		eccentEarthOrbit = append(eccentEarthOrbit, temp)
+	}
+	return
+}
+
 // Calculate the Sun Eq Ctr based on the formula: sin(deg2rad(geomMeanAnomSun))*(1.914602-julianCentury*(0.004817+0.000014*julianCentury))+sin(deg2rad(2*geomMeanAnomSun))*(0.019993-0.000101*julianCentury)+sin(deg2rad(3*geomMeanAnomSun))*0.000289;
 // julianCentury - Julian century calculated by the calcJulianCentury function
 // geomMeanAnomSun - Geom Mean Anom Sun calculated by the calcGeomMeanAnomSun function
