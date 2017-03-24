@@ -19,6 +19,22 @@ func deg2rad(degrees float64) float64 {
 	return degrees * (math.Pi / 180.0)
 }
 
+// Calculate the Sun App Long in degrees based on the formula: sunTrueLong-0.00569-0.00478*sin(deg2rad(125.04-1934.136*julianCentury))
+// sunTrueLong - Sun True Long calculated by the calcSunTrueLong function
+// julianCentury - Julian century calculated by the calcJulianCentury function
+// Return The Sun App Long slice
+func calcSunAppLong(sunTrueLong []float64, julianCentury []float64) (sunAppLong []float64) {
+	if len(sunTrueLong) != len(julianCentury) {
+		return
+	}
+
+	for index := 0; index < len(sunTrueLong); index++ {
+		temp := sunTrueLong[index] - 0.00569 - 0.00478*math.Sin(deg2rad(125.04-1934.136*julianCentury[index]))
+		sunAppLong = append(sunAppLong, temp)
+	}
+	return
+}
+
 // Calculate the Mean Obliq Ecliptic in degrees based on the formula: 23+(26+((21.448-julianCentury*(46.815+julianCentury*(0.00059-julianCentury*0.001813))))/60)/60
 // julianCentury - Julian century calculated by the calcJulianCentury function
 // Return the Mean Obliq Ecliptic slice
