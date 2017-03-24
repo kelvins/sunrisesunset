@@ -19,6 +19,18 @@ func deg2rad(degrees float64) float64 {
 	return degrees * (math.Pi / 180.0)
 }
 
+// Creates a vector with the seconds normalized to the range 0~1.
+// seconds - The number of seconds will be normalized to 1
+// Return A vector with the seconds normalized to 0~1
+func createSecondsNormalized(seconds uint64) (vector []float64) {
+	var index uint64
+	for index = 0; index < seconds; index++ {
+		temp := float64(index) / float64(seconds-1)
+		vector = append(vector, temp)
+	}
+	return
+}
+
 // Calculate Julian Day based on the formula: nDays+2415018.5+secondsNorm-UTCoff/24
 // numDays - The number of days calculated in the calculate function
 // secondsNorm - Seconds normalized calculated by the createSecondsNormalized function
