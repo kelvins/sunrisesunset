@@ -33,6 +33,8 @@ package main
 
 import (
     "fmt"
+    "time"
+    "github.com/kelvins/sunrisesunset"
 )
 
 func main() {
@@ -43,16 +45,17 @@ func main() {
     date      := time.Date(2017, 5, 20, 0, 0, 0, 0, time.UTC)
 
     // Calculate the sunrise and sunset times
-    sunrise, sunset, err := GetSunriseSunset(latitude, longitude, utcOffset, date)
+    sunrise, sunset, err := sunrisesunset.GetSunriseSunset(latitude, longitude, utcOffset, date)
 
     // If no error has occurred, print the results
     if err == nil {
-        fmt.Println(sunrise)
-        fmt.Println(sunset)
+        fmt.Println("Sunrise:", sunrise.Format("15:04:05"))
+        fmt.Println("Sunset:", sunset.Format("15:04:05"))
     } else {
         fmt.Println(err)
     }
 }
+
 ```
 
 License
