@@ -19,6 +19,22 @@ func deg2rad(degrees float64) float64 {
 	return degrees * (math.Pi / 180.0)
 }
 
+// Calculate the Obliq Corr in degrees based on the formula: meanObliqEcliptic+0.00256*cos(deg2rad(125.04-1934.136*julianCentury))
+// meanObliqEcliptic - Mean Obliq Ecliptic calculated by the calcMeanObliqEcliptic function
+// julianCentury - Julian century calculated by the calcJulianCentury function
+// Return the Obliq Corr slice
+func calcObliqCorr(meanObliqEcliptic []float64, julianCentury []float64) (obliqCorr []float64) {
+	if len(meanObliqEcliptic) != len(julianCentury) {
+		return
+	}
+
+	for index := 0; index < len(julianCentury); index++ {
+		temp := meanObliqEcliptic[index] + 0.00256*math.Cos(deg2rad(125.04-1934.136*julianCentury[index]))
+		obliqCorr = append(obliqCorr, temp)
+	}
+	return
+}
+
 // Calculate the Sun Declination in degrees based on the formula: rad2deg(asin(sin(deg2rad(obliqCorr))*sin(deg2rad(sunAppLong))))
 // obliqCorr - Obliq Corr calculated by the calcObliqCorr function
 // sunAppLong - Sun App Long calculated by the calcSunAppLong function
