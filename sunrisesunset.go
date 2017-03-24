@@ -5,9 +5,9 @@
 package sunrisesunset
 
 import (
+	"errors"
 	"math"
 	"time"
-	//"errors"
 )
 
 // Convert radians to degrees
@@ -268,8 +268,8 @@ func checkDate(date time.Time) bool {
 }
 
 // Compute the number of days between two dates
-func diffDays(date1, date2 time.Time) int {
-	return int(date2.Sub(date1) / (24 * time.Hour))
+func diffDays(date1, date2 time.Time) int64 {
+	return int64(date2.Sub(date1) / (24 * time.Hour))
 }
 
 // Find the index of the minimum value
@@ -286,4 +286,127 @@ func minIndex(slice []float64) int {
 		}
 	}
 	return minIndex
+}
+
+// Convert each value to the absolute value
+func abs(slice []float64) []float64 {
+	var newSlice []float64
+	for _, value := range slice {
+		if value < 0.0 {
+			value = math.Abs(value)
+		}
+		newSlice = append(newSlice, value)
+	}
+	return newSlice
+}
+
+func round(value float64) int {
+	if value < 0 {
+		return int(value - 0.5)
+	}
+	return int(value + 0.5)
+}
+
+// Function responsible for calculate the apparent Sunrise and Sunset times.
+// Return True if successful and false if the parameters are wrong
+func GetSunriseSunset(latitude float64, longitude float64, utcOffset float64, date time.Time) (sunrise time.Time, sunset time.Time, err error) {
+	// Check latitude
+	if !checkLatitude(latitude) {
+		err = errors.New("Invalid latitude")
+		return
+	}
+	// Check longitude
+	if !checkLongitude(longitude) {
+		err = errors.New("Invalid longitude")
+		return
+	}
+	// Check UTC offset
+	if !checkUtcOffset(utcOffset) {
+		err = errors.New("Invalid UTC offset")
+		return
+	}
+	// Check date
+	if !checkDate(date) {
+		err = errors.New("Invalid date")
+		return
+	}
+
+	// The number of days since 30/12/1899
+	since := time.Date(1899, 12, 30, 0, 0, 0, 0, time.UTC)
+	numDays := diffDays(since, date)
+
+	// Seconds of a full day 86400
+	seconds := 24 * 60 * 60
+
+	// Creates a vector that represents each second in the range 0~1
+	secondsNorm := createSecondsNormalized(seconds)
+
+	// Calculate Julian Day
+	julianDay := calcJulianDay(numDays, secondsNorm, utcOffset)
+
+	// Calculate Julian Century
+	julianCentury := calcJulianCentury(julianDay)
+
+	// Geom Mean Long Sun (deg)
+	geomMeanLongSun := calcGeomMeanLongSun(julianCentury)
+
+	// Geom Mean Anom Sun (deg)
+	geomMeanAnomSun := calcGeomMeanAnomSun(julianCentury)
+
+	// Eccent Earth Orbit
+	eccentEarthOrbit := calcEccentEarthOrbit(julianCentury)
+
+	// Sun Eq of Ctr
+	sunEqCtr := calcSunEqCtr(julianCentury, geomMeanAnomSun)
+
+	// Sun True Long (deg)
+	sunTrueLong := calcSunTrueLong(sunEqCtr, geomMeanLongSun)
+
+	// Sun App Long (deg)
+	sunAppLong := calcSunAppLong(sunTrueLong, julianCentury)
+
+	// Mean Obliq Ecliptic (deg)
+	meanObliqEcliptic := calcMeanObliqEcliptic(julianCentury)
+
+	// Obliq Corr (deg)
+	obliqCorr := calcObliqCorr(meanObliqEcliptic, julianCentury)
+
+	// Sun Declin (deg)
+	sunDeclination := calcSunDeclination(obliqCorr, sunAppLong)
+
+	// var y
+	var multiFactor []float64
+	for index := 0; index < len(obliqCorr); index++ {
+		temp := math.Tan(deg2rad(obliqCorr[index]/2.0)) * math.Tan(deg2rad(obliqCorr[index]/2.0))
+		multiFactor = append(multiFactor, temp)
+	}
+
+	// Eq of Time (minutes)
+	equationOfTime := calcEquationOfTime(multiFactor, geomMeanLongSun, eccentEarthOrbit, geomMeanAnomSun)
+
+	// HA Sunrise (deg)
+	haSunrise := calcHaSunrise(latitude, sunDeclination)
+
+	// Solar Noon (LST)
+	solarNoon := calcSolarNoon(longitude, equationOfTime, utcOffset)
+
+	// Sunrise and Sunset Times (LST)
+	var tempSunrise []float64
+	var tempSunset []float64
+
+	for index := 0; index < len(solarNoon); index++ {
+		tempSunrise = append(tempSunrise, (solarNoon[index] - float64(round(haSunrise[index]*4.0*60.0)) - float64(seconds)*secondsNorm[index]))
+		tempSunset = append(tempSunset, (solarNoon[index] + float64(round(haSunrise[index]*4.0*60.0)) - float64(seconds)*secondsNorm[index]))
+	}
+
+	// Get the sunrise and sunset in seconds
+	sunriseSeconds := minIndex(abs(tempSunrise))
+	sunsetSeconds := minIndex(abs(tempSunset))
+
+	// Convert the seconds to time
+	defaultTime := new(time.Time)
+	sunrise = defaultTime.Add(time.Duration(sunriseSeconds) * time.Second)
+	sunset = defaultTime.Add(time.Duration(sunsetSeconds) * time.Second)
+
+	return
 }
