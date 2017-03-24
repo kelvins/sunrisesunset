@@ -19,6 +19,17 @@ func deg2rad(degrees float64) float64 {
 	return degrees * (math.Pi / 180.0)
 }
 
+// Calculate the Mean Obliq Ecliptic in degrees based on the formula: 23+(26+((21.448-julianCentury*(46.815+julianCentury*(0.00059-julianCentury*0.001813))))/60)/60
+// julianCentury - Julian century calculated by the calcJulianCentury function
+// Return the Mean Obliq Ecliptic slice
+func calcMeanObliqEcliptic(julianCentury []float64) (meanObliqEcliptic []float64) {
+	for index := 0; index < len(julianCentury); index++ {
+		temp := 23.0 + (26.0+(21.448-julianCentury[index]*(46.815+julianCentury[index]*(0.00059-julianCentury[index]*0.001813)))/60.0)/60.0
+		meanObliqEcliptic = append(meanObliqEcliptic, temp)
+	}
+	return
+}
+
 // Calculate the Obliq Corr in degrees based on the formula: meanObliqEcliptic+0.00256*cos(deg2rad(125.04-1934.136*julianCentury))
 // meanObliqEcliptic - Mean Obliq Ecliptic calculated by the calcMeanObliqEcliptic function
 // julianCentury - Julian century calculated by the calcJulianCentury function
