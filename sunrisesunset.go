@@ -5,7 +5,7 @@ package sunrisesunset
 
 import (
 	"math"
-	//"time"
+	"time"
 	//"errors"
 )
 
@@ -252,6 +252,16 @@ func checkLongitude(longitude float64) bool {
 // Check if the UTC offset is valid. Range: -12 - 14
 func checkUtcOffset(utcOffset float64) bool {
 	if utcOffset < -12 || utcOffset > 14 {
+		return false
+	}
+	return true
+}
+
+// Check if the date is valid.
+func checkDate(date time.Time) bool {
+	minDate := time.Date(1900, 1, 1, 0, 0, 0, 0, time.UTC)
+	maxDate := time.Date(2200, 1, 1, 0, 0, 0, 0, time.UTC)
+	if date.Before(minDate) || date.After(maxDate) {
 		return false
 	}
 	return true
