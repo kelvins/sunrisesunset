@@ -19,6 +19,22 @@ func deg2rad(degrees float64) float64 {
 	return degrees * (math.Pi / 180.0)
 }
 
+// Calculate the Sun Declination in degrees based on the formula: rad2deg(asin(sin(deg2rad(obliqCorr))*sin(deg2rad(sunAppLong))))
+// obliqCorr - Obliq Corr calculated by the calcObliqCorr function
+// sunAppLong - Sun App Long calculated by the calcSunAppLong function
+// Return the sun declination slice
+func calcSunDeclination(obliqCorr []float64, sunAppLong []float64) (sunDeclination []float64) {
+	if len(obliqCorr) != len(sunAppLong) {
+		return
+	}
+
+	for index := 0; index < len(obliqCorr); index++ {
+		temp := rad2deg(math.Asin(math.Sin(deg2rad(obliqCorr[index])) * math.Sin(deg2rad(sunAppLong[index]))))
+		sunDeclination = append(sunDeclination, temp)
+	}
+	return
+}
+
 // Calculate the equation of time (minutes) based on the formula:
 // 4*rad2deg(multiFactor*sin(2*deg2rad(geomMeanLongSun))-2*eccentEarthOrbit*sin(deg2rad(geomMeanAnomSun))+4*eccentEarthOrbit*multiFactor*sin(deg2rad(geomMeanAnomSun))*cos(2*deg2rad(geomMeanLongSun))-0.5*multiFactor*multiFactor*sin(4*deg2rad(geomMeanLongSun))-1.25*eccentEarthOrbit*eccentEarthOrbit*sin(2*deg2rad(geomMeanAnomSun)))
 // multiFactor - The Multi Factor vector calculated in the calculate function
@@ -28,9 +44,9 @@ func deg2rad(degrees float64) float64 {
 // Return the equation of time slice
 func calcEquationOfTime(multiFactor []float64, geomMeanLongSun []float64, eccentEarthOrbit []float64, geomMeanAnomSun []float64) (equationOfTime []float64) {
 
-	if len(multiFactor) != len(geomMeanLongSun)  ||
-		 len(multiFactor) != len(eccentEarthOrbit) ||
-		 len(multiFactor) != len(geomMeanAnomSun) {
+	if len(multiFactor) != len(geomMeanLongSun) ||
+		len(multiFactor) != len(eccentEarthOrbit) ||
+		len(multiFactor) != len(geomMeanAnomSun) {
 		return
 	}
 
