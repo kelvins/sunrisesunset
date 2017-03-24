@@ -4,10 +4,20 @@
 package sunrisesunset
 
 import (
+  "math"
 //"time"
-//"math"
 //"errors"
 )
+
+// Convert radians to degrees
+func rad2deg(radians float64) (float64) {
+  return radians * (180.0/math.Pi)
+}
+
+// Convert degrees to radians
+func deg2rad(degrees float64) (float64) {
+  return degrees * (math.Pi/180.0)
+}
 
 // Calculate the HaSunrise in degrees based on the formula: rad2deg(acos(cos(deg2rad(90.833))/(cos(deg2rad(latitude))*cos(deg2rad(sunDeclination)))-tan(deg2rad(latitude))*tan(deg2rad(sunDeclination))))
 // latitude - The latitude defined by the user
@@ -15,7 +25,7 @@ import (
 // Return the HaSunrise slice
 func calcHaSunrise(latitude float64, sunDeclination []float64) (haSunrise []float64) {
     for index := 0; index < len(sunDeclination); index++ {
-        temp := rad2deg(acos(cos(deg2rad(90.833))/(cos(deg2rad(latitude))*cos(deg2rad(sunDeclination[index])))-tan(deg2rad(latitude))*tan(deg2rad(sunDeclination[index]))));
+        temp := rad2deg(acos(cos(deg2rad(90.833))/(cos(deg2rad(latitude))*cos(deg2rad(sunDeclination[index])))-tan(deg2rad(latitude))*tan(deg2rad(sunDeclination[index]))))
         haSunrise = append(haSunrise, temp)
     }
     return
