@@ -19,6 +19,17 @@ func deg2rad(degrees float64) float64 {
 	return degrees * (math.Pi / 180.0)
 }
 
+// Calculate the Julian Century based on the formula: (julianDay - 2451545.0) / 36525.0
+// julianDay - Julian day vector calculated by the calcJulianDay function
+// Return Julian century slice
+func calcJulianCentury(julianDay []float64) (julianCentury []float64) {
+	for index := 0; index < len(julianDay); index++ {
+		temp := (julianDay[index] - 2451545.0) / 36525.0
+		julianCentury = append(julianCentury, temp)
+	}
+	return
+}
+
 // Calculate the Geom Mean Long Sun in degrees based on the formula: 280.46646 + julianCentury * (36000.76983 + julianCentury * 0.0003032)
 // julianCentury - Julian century calculated by the calcJulianCentury function
 // Return The Geom Mean Long Sun slice
