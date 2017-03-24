@@ -19,6 +19,19 @@ func deg2rad(degrees float64) float64 {
 	return degrees * (math.Pi / 180.0)
 }
 
+// Calculate Julian Day based on the formula: nDays+2415018.5+secondsNorm-UTCoff/24
+// numDays - The number of days calculated in the calculate function
+// secondsNorm - Seconds normalized calculated by the createSecondsNormalized function
+// utcOffset - UTC offset defined by the user
+// Return Julian day slice
+func calcJulianDay(numDays int64, secondsNorm []float64, utcOffset float64) (julianDay []float64) {
+	for index := 0; index < len(secondsNorm); index++ {
+		temp := float64(numDays) + 2415018.5 + secondsNorm[index] - utcOffset/24.0
+		julianDay = append(julianDay, temp)
+	}
+	return
+}
+
 // Calculate the Julian Century based on the formula: (julianDay - 2451545.0) / 36525.0
 // julianDay - Julian day vector calculated by the calcJulianDay function
 // Return Julian century slice
