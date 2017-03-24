@@ -19,6 +19,22 @@ func deg2rad(degrees float64) float64 {
 	return degrees * (math.Pi / 180.0)
 }
 
+// Calculate the Sun True Long in degrees based on the formula: sunEqCtr + geomMeanLongSun
+// sunEqCtr - Sun Eq Ctr calculated by the calcSunEqCtr function
+// geomMeanLongSun - Geom Mean Long Sun calculated by the calcGeomMeanLongSun function
+// Return The Sun True Long slice
+func calcSunTrueLong(sunEqCtr []float64, geomMeanLongSun []float64) (sunTrueLong []float64) {
+	if len(sunEqCtr) != len(geomMeanLongSun) {
+		return
+	}
+
+	for index := 0; index < len(sunEqCtr); index++ {
+		temp := sunEqCtr[index] + geomMeanLongSun[index]
+		sunTrueLong = append(sunTrueLong, temp)
+	}
+	return
+}
+
 // Calculate the Sun App Long in degrees based on the formula: sunTrueLong-0.00569-0.00478*sin(deg2rad(125.04-1934.136*julianCentury))
 // sunTrueLong - Sun True Long calculated by the calcSunTrueLong function
 // julianCentury - Julian century calculated by the calcJulianCentury function
