@@ -1,12 +1,15 @@
 Sunrise Sunset Package
 ==========================
-Go package used to calculate the apparent sunrise and sunset times based on latitude, longitude, date and UTC offset.
 
-![](http://i.imgur.com/hjUZT28.jpg)
+[![License: MIT](https://img.shields.io/badge/License-MIT-brightgreen.svg)](LICENSE)
+
+Go package used to calculate the apparent sunrise and sunset times based on latitude, longitude, date and UTC offset.
 
 You can use go get command:
 
     go get github.com/kelvins/sunrisesunset
+
+![](http://i.imgur.com/hjUZT28.jpg)
 
 General
 ----
@@ -21,12 +24,42 @@ Based on the [Solar Calculation Details][5]:
 
 > Due to atmospheric refraction, sunrise occurs shortly before the sun crosses above the horizon. Light from the sun is bent, or refracted, as it enters earth's atmosphere. See [Apparent Sunrise Figure][7]. This effect causes the apparent sunrise to be earlier than the actual sunrise. Similarly, apparent sunset occurs slightly later than actual sunset. The sunrise and sunset times reported in our calculator have been corrected for the approximate effects of atmospheric refraction. However, it should be noted that due to changes in air pressure, relative humidity, and other quantities, we cannot predict the exact effects of atmospheric refraction on sunrise and sunset time. Also note that this possible error increases with higher (closer to the poles) latitudes.
 
+Usage
+----
+
+``` go
+
+package main
+
+import (
+    "fmt"
+)
+
+func main() {
+    // Set the parameters
+    latitude  := -23.545570
+    longitude := -46.704082
+    utcOffset := -3.0
+    date      := time.Date(2017, 5, 20, 0, 0, 0, 0, time.UTC)
+
+    // Calculate the sunrise and sunset times
+    sunrise, sunset, err := GetSunriseSunset(latitude, longitude, utcOffset, date)
+
+    // If no error has occurred, print the results
+    if err == nil {
+        fmt.Println(sunrise)
+        fmt.Println(sunset)
+    } else {
+        fmt.Println(err)
+    }
+}
+```
+
 License
 ----
 
-[MIT][8]
+This project was created under the [MIT license][8]
 
-**Free Software, Hell Yeah!**
 
   [1]: https://www.mathworks.com/matlabcentral/fileexchange/62180-corrected-sunrise--sunset--noon-times-in-seconds-and-solar-angles?requestedDomain=www.mathworks.com
   [2]: https://www.esrl.noaa.gov/gmd/grad/solcalc/calcdetails.html
