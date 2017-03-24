@@ -232,3 +232,11 @@ func calcSolarNoon(longitude float64, equationOfTime []float64, utcOffset float6
 	}
 	return
 }
+
+// Check if the latitude is valid. Range: -90 - 90
+func checkLatitude(latitude float64) bool {
+	if latitude < -90 || latitude > 90 {
+		return false
+	}
+	return true
+}
