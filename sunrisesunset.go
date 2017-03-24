@@ -19,6 +19,22 @@ func deg2rad(degrees float64) float64 {
 	return degrees * (math.Pi / 180.0)
 }
 
+// Calculate the Sun Eq Ctr based on the formula: sin(deg2rad(geomMeanAnomSun))*(1.914602-julianCentury*(0.004817+0.000014*julianCentury))+sin(deg2rad(2*geomMeanAnomSun))*(0.019993-0.000101*julianCentury)+sin(deg2rad(3*geomMeanAnomSun))*0.000289;
+// julianCentury - Julian century calculated by the calcJulianCentury function
+// geomMeanAnomSun - Geom Mean Anom Sun calculated by the calcGeomMeanAnomSun function
+// Return The Sun Eq Ctr slice
+func calcSunEqCtr(julianCentury []float64, geomMeanAnomSun []float64) (sunEqCtr []float64) {
+	if len(julianCentury) != len(geomMeanAnomSun) {
+		return
+	}
+
+	for index := 0; index < len(julianCentury); index++ {
+		temp := math.Sin(deg2rad(geomMeanAnomSun[index]))*(1.914602-julianCentury[index]*(0.004817+0.000014*julianCentury[index])) + math.Sin(deg2rad(2*geomMeanAnomSun[index]))*(0.019993-0.000101*julianCentury[index]) + math.Sin(deg2rad(3*geomMeanAnomSun[index]))*0.000289
+		sunEqCtr = append(sunEqCtr, temp)
+	}
+	return
+}
+
 // Calculate the Sun True Long in degrees based on the formula: sunEqCtr + geomMeanLongSun
 // sunEqCtr - Sun Eq Ctr calculated by the calcSunEqCtr function
 // geomMeanLongSun - Geom Mean Long Sun calculated by the calcGeomMeanLongSun function
