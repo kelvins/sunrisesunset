@@ -1,5 +1,6 @@
 /*
- * Package details
+ * All calculations (formulas) were extracted from the Solar Calculation Details of the Earth System Research Laboratory:
+ * https://www.esrl.noaa.gov/gmd/grad/solcalc/calcdetails.html
  */
 package sunrisesunset
 
@@ -22,9 +23,8 @@ func deg2rad(degrees float64) float64 {
 // Creates a vector with the seconds normalized to the range 0~1.
 // seconds - The number of seconds will be normalized to 1
 // Return A vector with the seconds normalized to 0~1
-func createSecondsNormalized(seconds uint64) (vector []float64) {
-	var index uint64
-	for index = 0; index < seconds; index++ {
+func createSecondsNormalized(seconds int) (vector []float64) {
+	for index := 0; index < seconds; index++ {
 		temp := float64(index) / float64(seconds-1)
 		vector = append(vector, temp)
 	}
@@ -265,4 +265,25 @@ func checkDate(date time.Time) bool {
 		return false
 	}
 	return true
+}
+
+// Compute the number of days between two dates
+func diffDays(date1, date2 time.Time) int {
+	return int(date2.Sub(date1) / (24 * time.Hour))
+}
+
+// Find the index of the minimum value
+func minIndex(slice []float64) int {
+	if len(slice) == 0 {
+		return -1
+	}
+	min := slice[0]
+	minIndex := 0
+	for index := 0; index < len(slice); index++ {
+		if slice[index] < min {
+			min = slice[index]
+			minIndex = index
+		}
+	}
+	return minIndex
 }
