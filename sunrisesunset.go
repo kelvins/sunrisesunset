@@ -9,6 +9,19 @@ import (
 //"errors"
 )
 
+// Calculate the HaSunrise in degrees based on the formula: rad2deg(acos(cos(deg2rad(90.833))/(cos(deg2rad(latitude))*cos(deg2rad(sunDeclination)))-tan(deg2rad(latitude))*tan(deg2rad(sunDeclination))))
+// latitude - The latitude defined by the user
+// sunDeclination - The Sun Declination calculated by the calcSunDeclination function
+// Return the HaSunrise slice
+func calcHaSunrise(latitude float64, sunDeclination []float64) (haSunrise []float64) {
+    for index := 0; index < len(sunDeclination); index++ {
+        temp := rad2deg(acos(cos(deg2rad(90.833))/(cos(deg2rad(latitude))*cos(deg2rad(sunDeclination[index])))-tan(deg2rad(latitude))*tan(deg2rad(sunDeclination[index]))));
+        haSunrise = append(haSunrise, temp)
+    }
+    return
+}
+
+
 // Calculate the Solar Noon based on the formula: (720 - 4 * longitude - equationOfTime + utcOffset * 60) * 60
 // longitude - The longitude is defined by the user
 // equationOfTime - The Equation of Time slice is calculated by the calcEquationOfTime function
