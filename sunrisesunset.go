@@ -19,6 +19,18 @@ func deg2rad(degrees float64) float64 {
 	return degrees * (math.Pi / 180.0)
 }
 
+// Calculate the Geom Mean Long Sun in degrees based on the formula: 280.46646 + julianCentury * (36000.76983 + julianCentury * 0.0003032)
+// julianCentury - Julian century calculated by the calcJulianCentury function
+// Return The Geom Mean Long Sun slice
+func calcGeomMeanLongSun(julianCentury []float64) (geomMeanLongSun []float64) {
+	for index := 0; index < len(julianCentury); index++ {
+		a := 280.46646 + julianCentury[index]*(36000.76983+julianCentury[index]*0.0003032)
+		temp := math.Mod(a, 360.0)
+		geomMeanLongSun = append(geomMeanLongSun, temp)
+	}
+	return
+}
+
 // Calculate the Geom Mean Anom Sun in degrees based on the formula: 357.52911 + julianCentury * (35999.05029 - 0.0001537 * julianCentury)
 // julianCentury - Julian century calculated by the calcJulianCentury function
 // Return The Geom Mean Anom Sun slice
