@@ -53,7 +53,7 @@ func TestGetSunriseSunset(t *testing.T) {
 		{-23.545570, -46.704082, -3.0, date, time.Date(1, 1, 1, 6, 11, 44, 0, time.UTC), time.Date(1, 1, 1, 18, 14, 27, 0, time.UTC)}, // Sao Paulo - Brazil
 		{36.7201600, -4.4203400,  1.0, date, time.Date(1, 1, 1, 7, 16, 45, 0, time.UTC), time.Date(1, 1, 1, 19, 32, 10, 0, time.UTC)}, // Málaga - Spain
 		{ 28.613084,  77.209168,  5.5, date, time.Date(1, 1, 1, 6, 21, 45, 0, time.UTC), time.Date(1, 1, 1, 18, 34, 07, 0, time.UTC)}, // Nova Delhi - India
-    { 32.755701, -96.797296, -5.0, date, time.Date(1, 1, 1, 7, 26, 34, 0, time.UTC), time.Date(1, 1, 1, 19, 41, 07, 0, time.UTC)}, // Dallas - United States of America
+    { 32.755701, -96.797296, -5.0, date, time.Date(1, 1, 1, 7, 26, 34, 0, time.UTC), time.Date(1, 1, 1, 19, 41, 07, 0, time.UTC)}, // Dallas - USA
 	}
 
 	// Test with all values in the table
@@ -77,6 +77,35 @@ func TestGetSunriseSunset(t *testing.T) {
 				"Expected: ", pair.sunset,
 				"Received: ", sunset,
 			)
+		}
+	}
+}
+
+func TestDifferentLength(t *testing.T) {
+	var slice1 []float64
+	var slice2 []float64
+
+	slice1 = append(slice1, 16.0)
+	slice2 = append(slice2, 32.0)
+	slice2 = append(slice2, 64.0)
+
+	// Table tests
+	var tTests = []struct {
+		result []float64
+	}{
+		{ calcSunEqCtr(slice1, slice2)                       },
+		{ calcSunTrueLong(slice1, slice2)                    },
+		{ calcSunAppLong(slice1, slice2)                     },
+		{ calcObliqCorr(slice1, slice2)                      },
+		{ calcSunDeclination(slice1, slice2)                 },
+		{ calcEquationOfTime(slice1, slice2, slice2, slice2) },
+		{ calcEquationOfTime(slice2, slice2, slice2, slice1) },
+	}
+
+	// Test with all values in the table
+	for _, pair := range tTests {
+		if len(pair.result) != 0 {
+			t.Error("Expected: length == 0")
 		}
 	}
 }
