@@ -109,3 +109,21 @@ func TestDifferentLength(t *testing.T) {
 		}
 	}
 }
+
+func TestMinIndex(t *testing.T) {
+	var slice []float64
+	result := minIndex(slice)
+	if result != -1 {
+		t.Error("Expected: minIndex == -1")
+	}
+
+	slice = append(slice, 2.10)
+	slice = append(slice, 1.00)
+	slice = append(slice, 0.99)
+	slice = append(slice, 1.50)
+
+	result = minIndex(slice)
+	if result != 2 {
+		t.Error("Expected: minIndex == 2")
+	}
+}
