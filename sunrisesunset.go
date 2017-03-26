@@ -235,7 +235,7 @@ func calcSolarNoon(longitude float64, equationOfTime []float64, utcOffset float6
 
 // Check if the latitude is valid. Range: -90 - 90
 func checkLatitude(latitude float64) bool {
-	if latitude < -90 || latitude > 90 {
+	if latitude < -90.0 || latitude > 90.0 {
 		return false
 	}
 	return true
@@ -243,7 +243,7 @@ func checkLatitude(latitude float64) bool {
 
 // Check if the longitude is valid. Range: -180 - 180
 func checkLongitude(longitude float64) bool {
-	if longitude < -180 || longitude > 180 {
+	if longitude < -180.0 || longitude > 180.0 {
 		return false
 	}
 	return true
@@ -251,7 +251,7 @@ func checkLongitude(longitude float64) bool {
 
 // Check if the UTC offset is valid. Range: -12 - 14
 func checkUtcOffset(utcOffset float64) bool {
-	if utcOffset < -12 || utcOffset > 14 {
+	if utcOffset < -12.0 || utcOffset > 14.0 {
 		return false
 	}
 	return true
