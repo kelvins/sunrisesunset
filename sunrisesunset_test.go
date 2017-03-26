@@ -112,6 +112,7 @@ func TestDifferentLength(t *testing.T) {
 
 func TestMinIndex(t *testing.T) {
 	var slice []float64
+
 	result := minIndex(slice)
 	if result != -1 {
 		t.Error("Expected: minIndex == -1")
@@ -125,5 +126,31 @@ func TestMinIndex(t *testing.T) {
 	result = minIndex(slice)
 	if result != 2 {
 		t.Error("Expected: minIndex == 2")
+	}
+}
+
+func TestRound(t *testing.T) {
+	// Table tests
+	var tTests = []struct {
+		parameter float64
+		result    int
+	}{
+		{ -0.002,  0 },
+		{ -0.510, -1 },
+		{ -4.290, -4 },
+		{  0.490,  0 },
+		{  0.510,  1 },
+		{ 10.280, 10 },
+	}
+
+	// Test with all values in the table
+	for _, pair := range tTests {
+		result := round(pair.parameter)
+		if result != pair.result {
+			t.Error(
+				"Expected: ", pair.result,
+				"Received: ", result,
+			)
+		}
 	}
 }
