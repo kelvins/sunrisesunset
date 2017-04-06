@@ -1,4 +1,5 @@
-// This package is used to calculate the apparent sunrise and sunset based on the latitude, longitude, UTC offset and date.
+
+// Package sunrisesunset should be used to calculate the apparent sunrise and sunset based on the latitude, longitude, UTC offset and date.
 // All calculations (formulas) were extracted from the Solar Calculation Details of the Earth System Research Laboratory:
 // https://www.esrl.noaa.gov/gmd/grad/solcalc/calcdetails.html
 package sunrisesunset
@@ -306,8 +307,8 @@ func round(value float64) int {
 	return int(value + 0.5)
 }
 
-// Function responsible for calculate the apparent Sunrise and Sunset times.
-// Return True if successful and false if the parameters are wrong
+// GetSunriseSunset function is responsible for calculate the apparent Sunrise and Sunset times.
+// If some parameter is wrong it will return an error.
 func GetSunriseSunset(latitude float64, longitude float64, utcOffset float64, date time.Time) (sunrise time.Time, sunset time.Time, err error) {
 	// Check latitude
 	if !checkLatitude(latitude) {
