@@ -1,4 +1,3 @@
-
 // Package sunrisesunset should be used to calculate the apparent sunrise and sunset based on the latitude, longitude, UTC offset and date.
 // All calculations (formulas) were extracted from the Solar Calculation Details of the Earth System Research Laboratory:
 // https://www.esrl.noaa.gov/gmd/grad/solcalc/calcdetails.html
