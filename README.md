@@ -4,6 +4,7 @@ Sunrise Sunset Package
 [![License: MIT](https://img.shields.io/badge/License-MIT-brightgreen.svg)](LICENSE)
 [![Build Status](https://travis-ci.org/kelvins/sunrisesunset.svg?branch=master)](https://travis-ci.org/kelvins/sunrisesunset)
 [![Coverage Status](https://coveralls.io/repos/github/kelvins/sunrisesunset/badge.svg?branch=master)](https://coveralls.io/github/kelvins/sunrisesunset?branch=master)
+[![Go Report Card](https://goreportcard.com/badge/github.com/kelvins/sunrisesunset)](https://goreportcard.com/report/github.com/kelvins/sunrisesunset)
 
 Go package used to calculate the apparent sunrise and sunset times based on latitude, longitude, date and UTC offset.
 
