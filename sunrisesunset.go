@@ -9,6 +9,20 @@ import (
 	"time"
 )
 
+// The Parameters struct can also be used to manipulate
+// the data and get the sunrise and sunset
+type Parameters struct {
+	Latitude  float64
+	Longitude float64
+	UtcOffset float64
+	Date      time.Time
+}
+
+// Just call the 'general' GetSunriseSunset function and return the results
+func (p *Parameters) GetSunriseSunset() (time.Time, time.Time, error) {
+	return GetSunriseSunset(p.Latitude, p.Longitude, p.UtcOffset, p.Date)
+}
+
 // Convert radians to degrees
 func rad2deg(radians float64) float64 {
 	return radians * (180.0 / math.Pi)

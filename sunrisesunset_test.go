@@ -37,6 +37,20 @@ func TestGetSunriseSunset(t *testing.T) {
 				"Expect an error",
 			)
 		}
+
+		p := Parameters{
+			Latitude:  pair.latitude,
+			Longitude: pair.longitude,
+			UtcOffset: pair.utcOffset,
+			Date:      pair.date,
+		}
+
+		_, _, err = p.GetSunriseSunset()
+		if err == nil {
+			t.Error(
+				"Expect an error",
+			)
+		}
 	}
 
 	// Test with valid values
@@ -59,6 +73,34 @@ func TestGetSunriseSunset(t *testing.T) {
 	// Test with all values in the table
 	for _, pair := range tTests {
 		sunrise, sunset, err := GetSunriseSunset(pair.latitude, pair.longitude, pair.utcOffset, pair.date)
+
+		if err != nil {
+			t.Error(
+				"Expect: nil",
+				"Received: ", err,
+			)
+		}
+		if !sunrise.Equal(pair.sunrise) {
+			t.Error(
+				"Expected: ", pair.sunrise,
+				"Received: ", sunrise,
+			)
+		}
+		if !sunset.Equal(pair.sunset) {
+			t.Error(
+				"Expected: ", pair.sunset,
+				"Received: ", sunset,
+			)
+		}
+
+		p := Parameters{
+			Latitude:  pair.latitude,
+			Longitude: pair.longitude,
+			UtcOffset: pair.utcOffset,
+			Date:      pair.date,
+		}
+
+		sunrise, sunset, err = p.GetSunriseSunset()
 
 		if err != nil {
 			t.Error(
