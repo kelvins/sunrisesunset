@@ -417,9 +417,8 @@ func GetSunriseSunset(latitude float64, longitude float64, utcOffset float64, da
 	sunsetSeconds := minIndex(abs(tempSunset))
 
 	// Convert the seconds to time
-	defaultTime := new(time.Time)
-	sunrise = defaultTime.Add(time.Duration(sunriseSeconds) * time.Second)
-	sunset = defaultTime.Add(time.Duration(sunsetSeconds) * time.Second)
+	sunrise = time.Date(date.Year(), date.Month(), date.Day(), 0, 0, sunriseSeconds, 0, date.Location())
+	sunset = time.Date(date.Year(), date.Month(), date.Day(), 0, 0, sunsetSeconds, 0, date.Location())
 
 	return
 }
