@@ -1,3 +1,7 @@
+> :warning: This project is no longer being maintained :warning:
+>
+> Consider using a forked version of this repository or another project like [go-sunrise](https://github.com/nathan-osman/go-sunrise).
+
 Sunrise Sunset Package
 ==========================
 
